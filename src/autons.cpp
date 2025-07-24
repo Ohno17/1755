@@ -48,6 +48,8 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
 
+#pragma region Template Included
+
 ///
 // Drive Example
 ///
@@ -372,6 +374,8 @@ void measure_offsets() {
   if (chassis.odom_tracker_back != nullptr) chassis.odom_tracker_back->distance_to_center_set(b_offset);
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
 }
+
+#pragma endregion Template Included
 
 // . . .
 // Make your own autonomous functions here!

@@ -45,6 +45,7 @@
 
 // More includes here...
 #include "autons.hpp"
+#include "sprocket.hpp"
 #include "subsystems.hpp"
 
 

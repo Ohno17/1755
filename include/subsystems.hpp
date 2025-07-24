@@ -4,7 +4,8 @@
 #include "api.h"
 
 extern Drive chassis;
+inline Sprocket sprockets;
 
-// Your motors, sensors, etc. should go here.  Below are examples
+// Your motors, sensors, etc. should go here.
 
 inline pros::Motor sprocket(1);
