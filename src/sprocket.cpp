@@ -1,7 +1,8 @@
 #include "main.h"
 
 Sprocket::Sprocket() {
-    sprocket.set_brake_mode(MOTOR_BRAKE_COAST);
+    sprocketBottom.set_brake_mode(MOTOR_BRAKE_COAST);
+    sprocketTop.set_brake_mode(MOTOR_BRAKE_COAST);
 }
 
 void Sprocket::set_state(State state) {
@@ -11,20 +12,25 @@ void Sprocket::set_state(State state) {
 void Sprocket::move_motors() {
     switch (state) {
         case State::INTAKE_ONLY:
-            sprocket.move(Sprocket::VOLTAGE);
+            sprocketBottom.move(Sprocket::VOLTAGE);
+            sprocketTop.move(Sprocket::VOLTAGE);
             break;
         case State::OUTPUT_LOW:
-            sprocket.move(-Sprocket::VOLTAGE);
+            sprocketBottom.move(-Sprocket::VOLTAGE);
+            sprocketTop.move(Sprocket::VOLTAGE);
             break;
         case State::OUTPUT_MIDDLE:
-            sprocket.move(Sprocket::VOLTAGE);
+            sprocketBottom.move(Sprocket::VOLTAGE);
+            sprocketTop.move(Sprocket::VOLTAGE);
             break;
         case State::OUTPUT_HIGH:
-            sprocket.move(-Sprocket::VOLTAGE);
+            sprocketBottom.move(-Sprocket::VOLTAGE);
+            sprocketTop.move(Sprocket::VOLTAGE);
             break;
         case State::STOPPED:
         default:
-            sprocket.brake();
+            sprocketBottom.brake();
+            sprocketTop.brake();
             break;
     }
 }

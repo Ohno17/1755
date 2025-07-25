@@ -8,4 +8,5 @@ inline Sprocket sprockets;
 
 // Your motors, sensors, etc. should go here.
 
-inline pros::Motor sprocket(21);
+inline pros::Motor sprocketBottom(21);
+inline pros::Motor sprocketTop(21);
