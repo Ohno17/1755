@@ -24,19 +24,22 @@ void Sprocket::move_motors() {
             break;
         case State::STOPPED:
         default:
+            sprocket.brake();
             break;
     }
 }
 
 void Sprocket::opcontrol() {
-    if (master.get_digital(DIGITAL_UP)) {
+    if (master.get_digital(DIGITAL_A)) {
+        set_state(State::INTAKE_ONLY);
+    } else if (master.get_digital(DIGITAL_UP)) {
         set_state(State::OUTPUT_HIGH);
     } else if (master.get_digital(DIGITAL_RIGHT)) {
         set_state(State::OUTPUT_MIDDLE);
     } else if (master.get_digital(DIGITAL_DOWN)) {
         set_state(State::OUTPUT_LOW);
     } else {
-        set_state(State::INTAKE_ONLY);
+        set_state(State::STOPPED);
     }
 
     move_motors();
