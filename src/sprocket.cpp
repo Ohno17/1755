@@ -5,29 +5,26 @@ Sprocket::Sprocket() {
     sprocketTop.set_brake_mode(MOTOR_BRAKE_COAST);
 }
 
-void Sprocket::set_state(State state) {
+void Sprocket::set_state(OutputState state) {
     this->state = state;
 }
 
-void Sprocket::move_motors() {
+void Sprocket::output_motors() {
     switch (state) {
-        case State::INTAKE_ONLY:
-            sprocketBottom.move(Sprocket::VOLTAGE);
-            sprocketTop.move(Sprocket::VOLTAGE);
+        case OutputState::LOWER:
+            sprocketBottom.move(-Sprocket::REGULAR_VOLTAGE);
+            sprocketTop.brake();
             break;
-        case State::OUTPUT_LOW:
-            sprocketBottom.move(-Sprocket::VOLTAGE);
-            sprocketTop.move(Sprocket::VOLTAGE);
+        case OutputState::MIDDLE:
+            sprocketBottom.move(Sprocket::REGULAR_VOLTAGE);
+            sprocketTop.move(-Sprocket::REGULAR_VOLTAGE);
             break;
-        case State::OUTPUT_MIDDLE:
-            sprocketBottom.move(Sprocket::VOLTAGE);
-            sprocketTop.move(Sprocket::VOLTAGE);
+        case OutputState::HIGHER:
+            sprocketBottom.move(Sprocket::REGULAR_VOLTAGE);
+            sprocketTop.move(Sprocket::REGULAR_VOLTAGE);
             break;
-        case State::OUTPUT_HIGH:
-            sprocketBottom.move(-Sprocket::VOLTAGE);
-            sprocketTop.move(Sprocket::VOLTAGE);
-            break;
-        case State::STOPPED:
+        // Should never happen except after initalization
+        case OutputState::NONE:
         default:
             sprocketBottom.brake();
             sprocketTop.brake();
@@ -36,17 +33,23 @@ void Sprocket::move_motors() {
 }
 
 void Sprocket::opcontrol() {
-    if (master.get_digital(DIGITAL_A)) {
-        set_state(State::INTAKE_ONLY);
-    } else if (master.get_digital(DIGITAL_UP)) {
-        set_state(State::OUTPUT_HIGH);
+    if (master.get_digital(DIGITAL_UP)) {
+        set_state(OutputState::HIGH);
     } else if (master.get_digital(DIGITAL_RIGHT)) {
-        set_state(State::OUTPUT_MIDDLE);
+        set_state(OutputState::MIDDLE);
     } else if (master.get_digital(DIGITAL_DOWN)) {
-        set_state(State::OUTPUT_LOW);
-    } else {
-        set_state(State::STOPPED);
+        set_state(OutputState::LOW);
     }
 
-    move_motors();
+    if (master.get_digital(DIGITAL_R1)) {
+        output_motors();
+    } else if (master.get_digital(DIGITAL_R2)) {
+        // Only Intake
+        sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
+        sprocketTop.move(Sprocket::REGULAR_VOLTAGE);
+    } else {
+        // Stop if neither are pressed
+        sprocketBottom.brake();
+        sprocketTop.brake();
+    }
 }
