@@ -4,10 +4,10 @@
 #include "api.h"
 
 extern Drive chassis;
-inline Sprocket sprockets;
+extern Sprocket sprockets;
 
-// inline ez::Piston hopperMechanism;
+// inline ez::Piston hopperMechanism(20);
 
 inline pros::Motor sprocketBottom(14);
 inline pros::Motor sprocketTop(15);
-// inline pros::Motor sprocketIndexer(16);
+inline pros::Motor sprocketIndexer(16);
