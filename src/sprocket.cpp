@@ -9,21 +9,25 @@ void Sprocket::set_state(OutputState state) {
     this->state = state;
 }
 
+void Sprocket::move_set_state(OutputState state) {
+    this->state = state;
+    move_output_motors();
+}
+
 void Sprocket::move_output_motors() {
     switch (state) {
         case OutputState::LOWER:
-            sprocketBottom.move(-Sprocket::REGULAR_VOLTAGE);
+            sprocketBottom.move(-Sprocket::VOLTAGE);
             sprocketTop.brake();
             break;
         case OutputState::MIDDLE:
-            sprocketBottom.move(Sprocket::REGULAR_VOLTAGE);
-            sprocketTop.move(-Sprocket::REGULAR_VOLTAGE);
+            sprocketBottom.move(Sprocket::VOLTAGE);
+            sprocketTop.move(-Sprocket::VOLTAGE);
             break;
         case OutputState::HIGHER:
-            sprocketBottom.move(Sprocket::REGULAR_VOLTAGE);
-            sprocketTop.move(Sprocket::REGULAR_VOLTAGE);
+            sprocketBottom.move(Sprocket::VOLTAGE);
+            sprocketTop.move(Sprocket::VOLTAGE);
             break;
-        // Should never happen except after initalization
         case OutputState::NONE:
         default:
             sprocketBottom.brake();
@@ -42,11 +46,11 @@ void Sprocket::opcontrol() {
     }
 
     if (master.get_digital(DIGITAL_R1)) {
-        output_motors();
+        move_output_motors();
     } else if (master.get_digital(DIGITAL_R2)) {
         // Only Intake
         sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
-        sprocketTop.move(Sprocket::REGULAR_VOLTAGE);
+        sprocketTop.move(Sprocket::VOLTAGE);
     } else {
         // Stop if neither are pressed
         sprocketBottom.brake();

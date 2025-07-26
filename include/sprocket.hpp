@@ -14,12 +14,13 @@ class Sprocket {
         Sprocket();
 
         void set_state(OutputState state);
+        void move_set_state(OutputState state);
 
         void move_output_motors();
         void opcontrol();
     private:
         static const int INTAKE_VOLTAGE = 127;
-        static const int REGULAR_VOLTAGE = 90;
+        static const int VOLTAGE = 90;
 
         OutputState state = OutputState::NONE;
 };
