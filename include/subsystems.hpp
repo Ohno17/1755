@@ -6,8 +6,6 @@
 extern Drive chassis;
 inline Sprocket sprockets;
 
-// Your motors, sensors, etc. should go here.
-
 // inline ez::Piston hopperMechanism;
 
 inline pros::Motor sprocketBottom(14);
