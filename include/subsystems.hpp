@@ -8,5 +8,8 @@ inline Sprocket sprockets;
 
 // Your motors, sensors, etc. should go here.
 
-inline pros::Motor sprocketBottom(9);
-inline pros::Motor sprocketTop(10);
+// inline ez::Piston hopperMechanism;
+
+inline pros::Motor sprocketBottom(14);
+inline pros::Motor sprocketTop(15);
+// inline pros::Motor sprocketIndexer(16);

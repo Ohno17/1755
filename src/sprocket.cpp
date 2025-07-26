@@ -9,7 +9,7 @@ void Sprocket::set_state(OutputState state) {
     this->state = state;
 }
 
-void Sprocket::output_motors() {
+void Sprocket::move_output_motors() {
     switch (state) {
         case OutputState::LOWER:
             sprocketBottom.move(-Sprocket::REGULAR_VOLTAGE);
