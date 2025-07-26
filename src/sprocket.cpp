@@ -34,11 +34,11 @@ void Sprocket::output_motors() {
 
 void Sprocket::opcontrol() {
     if (master.get_digital(DIGITAL_UP)) {
-        set_state(OutputState::HIGH);
+        set_state(OutputState::HIGHER);
     } else if (master.get_digital(DIGITAL_RIGHT)) {
         set_state(OutputState::MIDDLE);
     } else if (master.get_digital(DIGITAL_DOWN)) {
-        set_state(OutputState::LOW);
+        set_state(OutputState::LOWER);
     }
 
     if (master.get_digital(DIGITAL_R1)) {
