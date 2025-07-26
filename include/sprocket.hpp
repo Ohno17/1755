@@ -5,7 +5,7 @@ class Sprocket {
     public:
         /// @brief Keeps track of currently selected output
         enum class OutputState {
-            NONE, // No output selected, should never be used
+            NONE, // No output selected
             LOWER, // Lower output
             MIDDLE, // Middle output
             HIGHER // Higher output
