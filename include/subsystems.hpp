@@ -8,6 +8,6 @@ extern Sprocket sprockets;
 
 // inline ez::Piston hopperMechanism(20);
 
-inline pros::Motor sprocketBottom(14);
-inline pros::Motor sprocketTop(15);
-inline pros::Motor sprocketIndexer(16);
+inline pros::Motor sprocketBottom(18);
+inline pros::Motor sprocketTop(19);
+inline pros::Motor sprocketIndexer(20);
