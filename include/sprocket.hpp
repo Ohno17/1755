@@ -1,6 +1,6 @@
 #pragma once
 
-/// @brief Controls and keeps track of all sprockets in the robot.
+/// @brief Controls sprockets in the robot.
 class Sprocket {
     public:
         /// @brief Keeps track of currently selected output
