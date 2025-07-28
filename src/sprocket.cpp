@@ -3,7 +3,7 @@
 Sprocket::Sprocket() {
     sprocketBottom.set_brake_mode(MOTOR_BRAKE_COAST);
     sprocketTop.set_brake_mode(MOTOR_BRAKE_COAST);
-    sprocketIndexer.set_brake_mode(MOTOR_BRAKE_COAST);
+    sprocketIndexer.set_brake_mode(MOTOR_BRAKE_BRAKE);
 }
 
 void Sprocket::set_state(OutputState state) {
