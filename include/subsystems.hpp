@@ -6,7 +6,7 @@
 extern Drive chassis;
 extern Sprocket sprockets;
 
-// inline ez::Piston hopperMechanism(20);
+// inline ez::Piston hopperMechanism(something);
 
 inline pros::Motor sprocketBottom(19);
 inline pros::Motor sprocketTop(18);
