@@ -14,9 +14,9 @@ class Sprocket {
         Sprocket();
 
         void set_state(OutputState state);
-        void move_set_state(OutputState state);
+        void set_state_and_move(OutputState state);
 
-        void move_output_motors();
+        void move_output_on_state();
         void opcontrol();
     private:
         static const int INTAKE_VOLTAGE = 127;
