@@ -223,6 +223,34 @@ void ez_template_extras() {
   }
 }
 
+inline pros::Optical opticalSensor(1); // Optical sensor on port 1
+  
+  void checkColorSort(string color){
+    int threshold = 200; //check with proximity values printed
+      int hue = opticalSensor.get_hue();
+      if (opticalSensor.get_proximity() > threshold) {
+        if (hue > 180 && hue < 240 && (color == "blue" || color == "BLUE")) { //blue is 240, red is 0, but our hooks are purple which is ~300
+          ez::screen_print("Color sort detected BLUE", 2);
+          printf("Hue: %d\n", hue);
+          printf("Proximity: %d\n", opticalSensor.get_proximity());
+          runColorSort();
+        }
+        else if (hue < 50 && (color == "red" || color == "RED")) { //blue is 240, red is 0
+          ez::screen_print("Color sort detected RED", 2);
+          printf("Hue: %d\n", hue);
+          printf("Proximity: %d\n", opticalSensor.get_proximity());
+          runColorSort();
+        }
+      }
+  }
+
+  void runColorSort(){
+    ez::screen_print("Color sort starting...", 2);
+  }
+
+
+
+
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -242,8 +270,10 @@ void opcontrol() {
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
+    opticalSensor.set_led_pwm(100);
+    checkColorSort("BLUE");
+    //checkColorSort("RED");
 
-    
     chassis.opcontrol_arcade_standard(ez::SPLIT);
     sprockets.opcontrol();
 
