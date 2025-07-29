@@ -223,6 +223,11 @@ void ez_template_extras() {
   }
 }
 
+  void runColorSort(){
+    ez::screen_print("Color sort starting...", 2);
+  }
+
+
 inline pros::Optical opticalSensor(1); // Optical sensor on port 1
   
   void checkColorSort(string color){
@@ -244,9 +249,6 @@ inline pros::Optical opticalSensor(1); // Optical sensor on port 1
       }
   }
 
-  void runColorSort(){
-    ez::screen_print("Color sort starting...", 2);
-  }
 
 
 
