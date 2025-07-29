@@ -225,7 +225,15 @@ void ez_template_extras() {
   }
 }
 
+<<<<<<< HEAD
 //devices, to be moved to a separate file later
+=======
+  void runColorSort(){
+    ez::screen_print("Color sort starting...", 2);
+  }
+
+
+>>>>>>> 07588a89e928bb22032b7453ed9feb4f1a6ffc21
 inline pros::Optical opticalSensor(1); // Optical sensor on port 1
 inline ez::Piston matchLoaderPiston('A');
 inline ez::Piston hoodPiston('B'); // Hood piston on port B
@@ -250,9 +258,6 @@ inline ez::Piston hoodPiston('B'); // Hood piston on port B
       }
   }
 
-  void runColorSort(){
-    ez::screen_print("Color sort starting...", 2);
-  }
 
     bool isMatchLoaderDown = false;
     void matchLoader(){
