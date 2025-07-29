@@ -1,6 +1,5 @@
 #include "main.h"
 #include "EZ-Template/piston.hpp"
-#include "EZ-Template/ez_template.hpp"
 
 // Chassis constructor
 ez::Drive chassis(
@@ -225,18 +224,15 @@ void ez_template_extras() {
   }
 }
 
-<<<<<<< HEAD
-//devices, to be moved to a separate file later
-=======
+
+  inline pros::Optical opticalSensor(1); // Optical sensor on port 1
+  inline ez::Piston matchLoaderPiston('A');
+  inline ez::Piston hoodPiston('B'); // Hood piston on port B
+
+
   void runColorSort(){
     ez::screen_print("Color sort starting...", 2);
   }
-
-
->>>>>>> 07588a89e928bb22032b7453ed9feb4f1a6ffc21
-inline pros::Optical opticalSensor(1); // Optical sensor on port 1
-inline ez::Piston matchLoaderPiston('A');
-inline ez::Piston hoodPiston('B'); // Hood piston on port B
 
   
   void checkColorSort(string color){
