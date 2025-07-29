@@ -12,10 +12,10 @@ void Sprocket::set_state(OutputState state) {
 
 void Sprocket::set_state_and_move(OutputState state) {
     this->state = state;
-    move_output_on_state();
+    move_motors_on_state();
 }
 
-void Sprocket::move_output_on_state() {
+void Sprocket::move_motors_on_state() {
     switch (state) {
         case OutputState::LOWER:
             sprocketBottom.move(-Sprocket::VOLTAGE);
@@ -48,20 +48,19 @@ void Sprocket::opcontrol() {
         set_state(OutputState::MIDDLE);
     } else if (master.get_digital(DIGITAL_DOWN)) {
         set_state(OutputState::LOWER);
-    }
-    else if (master.get_digital(DIGITAL_LEFT)) {
+    } else if (master.get_digital(DIGITAL_LEFT)) {
         sprocketBottom.move(Sprocket::VOLTAGE);
         sprocketTop.move(Sprocket::VOLTAGE);
         sprocketIndexer.brake();
         return;
     }
 
-    if (master.get_digital(DIGITAL_R2)) {
-        move_output_on_state();
-    } else if (master.get_digital(DIGITAL_R1)) {
-        sprocketIndexer.brake();
+    if (master.get_digital(DIGITAL_R2)) { // Output
+        move_motors_on_state();
+    } else if (master.get_digital(DIGITAL_R1)) { // Intake
         sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
         sprocketTop.move(Sprocket::VOLTAGE);
+        sprocketIndexer.brake();
     } else {
         sprocketBottom.brake();
         sprocketTop.brake();
