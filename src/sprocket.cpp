@@ -59,10 +59,17 @@ void Sprocket::opcontrol() {
     if (master.get_digital(DIGITAL_R2)) {
         move_output_on_state();
     } else if (master.get_digital(DIGITAL_R1)) {
+        sprocketIndexer.brake();
         sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
         sprocketTop.move(Sprocket::VOLTAGE);
     } else {
         sprocketBottom.brake();
         sprocketTop.brake();
+    }
+
+    if (master.get_digital(DIGITAL_B)) {
+        sprocketIndexer.move(-Sprocket::VOLTAGE);
+    } else {
+        sprocketIndexer.brake();
     }
 }
