@@ -424,7 +424,7 @@ void measure_offsets() {
 #pragma endregion Template Included
 
 // . . .
-// Make your own autonomous functions here!
+// Make your own autonomous functions here
 // . . .
 void auton_right() {
   chassis.pid_drive_set(24_in, DRIVE_SPEED, true); // Move forward 24 inches
