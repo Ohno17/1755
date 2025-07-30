@@ -48,27 +48,25 @@ void Sprocket::opcontrol() {
         set_state(OutputState::MIDDLE);
     } else if (master.get_digital(DIGITAL_DOWN)) {
         set_state(OutputState::LOWER);
-    } else if (master.get_digital(DIGITAL_LEFT)) {
-        sprocketBottom.move(Sprocket::VOLTAGE);
-        sprocketTop.move(Sprocket::VOLTAGE);
-        sprocketIndexer.brake();
-        return;
     }
 
-    if (master.get_digital(DIGITAL_R2)) { // Output
+    if (master.get_digital(DIGITAL_R2)) {
+        // Output
         move_motors_on_state();
-    } else if (master.get_digital(DIGITAL_R1)) { // Intake
+    } else if (master.get_digital(DIGITAL_R1)) {
+        // Intake
         sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
         sprocketTop.move(Sprocket::VOLTAGE);
         sprocketIndexer.brake();
     } else {
         sprocketBottom.brake();
         sprocketTop.brake();
-    }
 
-    if (master.get_digital(DIGITAL_B)) {
-        sprocketIndexer.move(-Sprocket::VOLTAGE);
-    } else {
-        sprocketIndexer.brake();
+        // Help unstuck indexer
+        if (master.get_digital(DIGITAL_B)) {
+            sprocketIndexer.move(-Sprocket::VOLTAGE);
+        } else {
+            sprocketIndexer.brake();
+        }
     }
 }
