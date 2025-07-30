@@ -1,13 +1,11 @@
 #include "main.h"
 
-// Chassis constructor
 ez::Drive chassis(
-    // These are your drive motors, the first motor is used for sensing!
     {14, -15, -16},    // Left Chassis Ports (negative port will reverse it!)
     {11, 12, -13},     // Right Chassis Ports (negative port will reverse it!)
 
     7,      // IMU Port
-    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    3.25,  // Wheel Diameter
     450);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 Sprocket sprockets;
@@ -137,27 +135,10 @@ void ez_screen_task() {
   while (true) {
     // Only run this when not connected to a competition switch
     if (!pros::competition::is_connected()) {
-      // Blank page for odom debugging
-      if (chassis.odom_enabled() && !chassis.pid_tuner_enabled()) {
-        // If we're on the first blank page...
-        if (ez::as::page_blank_is_on(0)) {
-          // Display X, Y, and Theta
-          ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get()) +
-                               "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
-                               "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
-                           1);  // Don't override the top Page line
-
-          // Display all trackers that are being used
-          screen_print_tracker(chassis.odom_tracker_left, "l", 4);
-          screen_print_tracker(chassis.odom_tracker_right, "r", 5);
-          screen_print_tracker(chassis.odom_tracker_back, "b", 6);
-          screen_print_tracker(chassis.odom_tracker_front, "f", 7);
-        }
+      if (ez::as::page_blank_is_on(0)) {
+        ez::screen_print("i am going to crash out", 1);
       }
-    }
-
-    // Remove all blank pages when connected to a comp switch
-    else {
+    } else {
       if (ez::as::page_blank_amount() > 0)
         ez::as::page_blank_remove_all();
     }

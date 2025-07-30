@@ -13,3 +13,5 @@ inline ez::Piston hoodPiston('B');
 inline pros::Motor sprocketBottom(19);
 inline pros::Motor sprocketTop(18);
 inline pros::Motor sprocketIndexer(20);
+
+inline enum class Team {RED, BLUE, SKILLS} team;
