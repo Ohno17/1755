@@ -1,7 +1,6 @@
 #pragma once
 
 void default_constants();
-
 void rightSideRed();
 void redAWP();
 void testPID();
@@ -19,3 +18,5 @@ void odom_pure_pursuit_wait_until_example();
 void odom_boomerang_example();
 void odom_boomerang_injected_pure_pursuit_example();
 void measure_offsets();
+void auton_right();
+void auton_left();

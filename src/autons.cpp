@@ -426,3 +426,17 @@ void measure_offsets() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+void auton_right() {
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, true); // Move forward 24 inches
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-90_deg, TURN_SPEED); // Turn 90 degrees to the right (negative for right turn)
+  chassis.pid_wait();
+}
+void auton_left() {
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, true); // Move forward 24 inches
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(90_deg, TURN_SPEED); // Turn 90 degrees to the left
+  chassis.pid_wait();
+}

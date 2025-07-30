@@ -1,4 +1,5 @@
 #include "main.h"
+#include "autons.hpp"
 
 ez::Drive chassis(
     {14, -15, -16},    // Left Chassis Ports (negative port will reverse it!)
@@ -36,8 +37,9 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({ 
-      {"Right Side Red", rightSideRed},
-      {"RED AWP", redAWP},
+      {"Right Side Red", auton_right},
+      {"Left Side Red", auton_left}, 
+      //{"RED AWP", redAWP},
       {"PID TEST", testPID},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
@@ -99,6 +101,7 @@ void autonomous() {
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
+  //auton_right();
 
   /*
   Odometry and Pure Pursuit are not magic
