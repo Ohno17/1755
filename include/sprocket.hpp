@@ -16,7 +16,7 @@ class Sprocket {
         void set_state(OutputState state);
         void set_state_and_move(OutputState state);
 
-        void move_output_on_state();
+        void move_motors_on_state();
         void opcontrol();
         void runIntake(bool isRunning);
     private:

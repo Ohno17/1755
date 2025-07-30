@@ -1,25 +1,14 @@
 #include "main.h"
-#include "EZ-Template/piston.hpp"
 
-// Chassis constructor
 ez::Drive chassis(
-    // These are your drive motors, the first motor is used for sensing!
     {14, -15, -16},    // Left Chassis Ports (negative port will reverse it!)
     {11, 12, -13},     // Right Chassis Ports (negative port will reverse it!)
 
     7,      // IMU Port
-    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    3.25,  // Wheel Diameter
     450);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 Sprocket sprockets;
-
-// Uncomment the trackers you're using here!
-// - `8` and `9` are smart ports (making these negative will reverse the sensor)
-//  - you should get positive values on the encoders going FORWARD and RIGHT
-// - `2.75` is the wheel diameter
-// - `4.0` is the distance from the center of the wheel to the center of the robot
-// ez::tracking_wheel horiz_tracker(8, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
-// ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -32,15 +21,6 @@ void initialize() {
   ez::ez_template_print();
 
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
-
-  // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
-  //  - change `back` to `front` if the tracking wheel is in front of the midline
-  //  - ignore this if you aren't using a horizontal tracker
-  // chassis.odom_tracker_back_set(&horiz_tracker);
-  // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
-  //  - change `left` to `right` if the tracking wheel is to the right of the centerline
-  //  - ignore this if you aren't using a vertical tracker
-  // chassis.odom_tracker_left_set(&vert_tracker);
 
   // Configure your chassis controls
   chassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
@@ -118,7 +98,6 @@ void autonomous() {
   chassis.pid_targets_reset();                // Resets PID targets to 0
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
-  // chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
 
   /*
@@ -159,27 +138,10 @@ void ez_screen_task() {
   while (true) {
     // Only run this when not connected to a competition switch
     if (!pros::competition::is_connected()) {
-      // Blank page for odom debugging
-      if (chassis.odom_enabled() && !chassis.pid_tuner_enabled()) {
-        // If we're on the first blank page...
-        if (ez::as::page_blank_is_on(0)) {
-          // Display X, Y, and Theta
-          ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get()) +
-                               "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
-                               "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
-                           1);  // Don't override the top Page line
-
-          // Display all trackers that are being used
-          screen_print_tracker(chassis.odom_tracker_left, "l", 4);
-          screen_print_tracker(chassis.odom_tracker_right, "r", 5);
-          screen_print_tracker(chassis.odom_tracker_back, "b", 6);
-          screen_print_tracker(chassis.odom_tracker_front, "f", 7);
-        }
+      if (ez::as::page_blank_is_on(0)) {
+        ez::screen_print("i am going to crash out", 1);
       }
-    }
-
-    // Remove all blank pages when connected to a comp switch
-    else {
+    } else {
       if (ez::as::page_blank_amount() > 0)
         ez::as::page_blank_remove_all();
     }
@@ -228,75 +190,70 @@ void ez_template_extras() {
 }
 
 
-  inline pros::Optical opticalSensor(1); // Optical sensor on port 1
-  inline ez::Piston matchLoaderPiston('A');
-  inline ez::Piston hoodPiston('B'); // Hood piston on port B
+void runColorSort(){
+  ez::screen_print("Color sort starting...", 2);
+}
 
 
-  void runColorSort(){
-    ez::screen_print("Color sort starting...", 2);
+void checkColorSort(string color){
+  int threshold = 200; //check with proximity values printed
+    int hue = opticalSensor.get_hue();
+    if (opticalSensor.get_proximity() > threshold) {
+      if (hue > 180 && hue < 240 && (color == "blue" || color == "BLUE")) { //blue is 240, red is 0, but our hooks are purple which is ~300
+        ez::screen_print("Color sort detected BLUE", 2);
+        printf("Hue: %d\n", hue);
+        printf("Proximity: %d\n", opticalSensor.get_proximity());
+        runColorSort();
+      }
+      else if (hue < 50 && (color == "red" || color == "RED")) { //blue is 240, red is 0
+        ez::screen_print("Color sort detected RED", 2);
+        printf("Hue: %d\n", hue);
+        printf("Proximity: %d\n", opticalSensor.get_proximity());
+        runColorSort();
+      }
+    }
+}
+
+
+bool isMatchLoaderDown = false;
+void matchLoader(){
+  if (isMatchLoaderDown) {
+    matchLoaderPiston.set(false);
+    isMatchLoaderDown = false;
+  } else {
+    matchLoaderPiston.set(true);
+    isMatchLoaderDown = true;
   }
+  pros::delay(1000); // Wait for the piston to move
+}
 
-  
-  void checkColorSort(std::string color){
-    int threshold = 200; //check with proximity values printed
-      int hue = opticalSensor.get_hue();
-      if (opticalSensor.get_proximity() > threshold) {
-        if (hue > 180 && hue < 240 && (color == "blue" || color == "BLUE")) { //blue is 240, red is 0, but our hooks are purple which is ~300
-          ez::screen_print("Color sort detected BLUE", 2);
-          printf("Hue: %d\n", hue);
-          printf("Proximity: %d\n", opticalSensor.get_proximity());
-          runColorSort();
-        }
-        else if (hue < 50 && (color == "red" || color == "RED")) { //blue is 240, red is 0
-          ez::screen_print("Color sort detected RED", 2);
-          printf("Hue: %d\n", hue);
-          printf("Proximity: %d\n", opticalSensor.get_proximity());
-          runColorSort();
-        }
-      }
+void matchLoader(string pos){
+  if(pos == "down") {
+    matchLoaderPiston.set(true);
+  } else {
+    matchLoaderPiston.set(false);
   }
+}
 
+void changeHoodPosition(string pos) {
+  if (pos == "up") {
+    hoodPiston.set(true);
+  } else if (pos == "down") {
+    hoodPiston.set(false);
+  }
+}
 
-    bool isMatchLoaderDown = false;
-    void matchLoader(){
-      if (isMatchLoaderDown) {
-        matchLoaderPiston.set(false);
-        isMatchLoaderDown = false;
-      } else {
-        matchLoaderPiston.set(true);
-        isMatchLoaderDown = true;
-      }
-      pros::delay(1000); // Wait for the piston to move
-    }
-
-    void matchLoader(std::string pos){
-      if(pos == "down") {
-        matchLoaderPiston.set(true);
-      } else {
-        matchLoaderPiston.set(false);
-      }
-    }
-
-    void changeHoodPosition(std::string pos) {
-      if (pos == "up") {
-        hoodPiston.set(true);
-      } else if (pos == "down") {
-        hoodPiston.set(false);
-      }
-    }
-
-    bool isHoodUp = false;
-    void changeHoodPosition(){
-      if (isHoodUp) {
-        changeHoodPosition("down");
-        isHoodUp = false;
-      } else {
-        changeHoodPosition("up");
-        isHoodUp = true;
-      }
-      pros::delay(1000); // Wait for the hood to move
-    }
+bool isHoodUp = false;
+void changeHoodPosition(){
+  if (isHoodUp) {
+    changeHoodPosition("down");
+    isHoodUp = false;
+  } else {
+    changeHoodPosition("up");
+    isHoodUp = true;
+  }
+  pros::delay(1000); // Wait for the hood to move
+}
 
 
 
@@ -327,18 +284,13 @@ void opcontrol() {
     sprockets.opcontrol();
 
     //matchloader code, will be moved to a separate file later
-      if (master.get_digital_new_press(DIGITAL_B)) {
-        matchLoader();
-      }
+    if (master.get_digital_new_press(DIGITAL_B)) {
+      matchLoader();
+    }
     //Hood code, will be moved to a separate file later
     if (master.get_digital_new_press(DIGITAL_L1)) {
       changeHoodPosition();
     }
-
-
-    // . . .
-    // Put more user control code here!
-    // . . .
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
