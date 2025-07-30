@@ -55,7 +55,10 @@ void initialize() {
   // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
 
   // Autonomous Selector using LLEMU
-  ez::as::auton_selector.autons_add({
+  ez::as::auton_selector.autons_add({ 
+      {"Right Side Red", rightSideRed},
+      {"RED AWP", redAWP},
+      {"PID TEST", testPID},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
@@ -235,7 +238,7 @@ void ez_template_extras() {
   }
 
   
-  void checkColorSort(string color){
+  void checkColorSort(std::string color){
     int threshold = 200; //check with proximity values printed
       int hue = opticalSensor.get_hue();
       if (opticalSensor.get_proximity() > threshold) {
@@ -267,7 +270,7 @@ void ez_template_extras() {
       pros::delay(1000); // Wait for the piston to move
     }
 
-    void matchLoader(string pos){
+    void matchLoader(std::string pos){
       if(pos == "down") {
         matchLoaderPiston.set(true);
       } else {
@@ -275,7 +278,7 @@ void ez_template_extras() {
       }
     }
 
-    void changeHoodPosition(string pos) {
+    void changeHoodPosition(std::string pos) {
       if (pos == "up") {
         hoodPiston.set(true);
       } else if (pos == "down") {

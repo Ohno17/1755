@@ -18,6 +18,7 @@ class Sprocket {
 
         void move_output_on_state();
         void opcontrol();
+        void runIntake(bool isRunning);
     private:
         static const int INTAKE_VOLTAGE = 127;
         static const int VOLTAGE = 90;

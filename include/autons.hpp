@@ -2,6 +2,9 @@
 
 void default_constants();
 
+void rightSideRed();
+void redAWP();
+void testPID();
 void drive_example();
 void turn_example();
 void drive_and_turn();

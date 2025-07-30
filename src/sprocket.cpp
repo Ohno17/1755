@@ -41,6 +41,17 @@ void Sprocket::move_output_on_state() {
     }
 }
 
+void Sprocket::runIntake(bool isRunning){
+    if(isRunning){
+        sprocketIndexer.brake();
+        sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
+        sprocketTop.move(Sprocket::VOLTAGE);
+    }else{
+        sprocketBottom.brake();
+        sprocketTop.brake();
+    }
+}
+
 void Sprocket::opcontrol() {
     if (master.get_digital(DIGITAL_UP)) {
         set_state(OutputState::HIGHER);
@@ -65,11 +76,11 @@ void Sprocket::opcontrol() {
     } else {
         sprocketBottom.brake();
         sprocketTop.brake();
-    }
-
-    if (master.get_digital(DIGITAL_B)) {
-        sprocketIndexer.move(-Sprocket::VOLTAGE);
-    } else {
-        sprocketIndexer.brake();
+        
+        if (master.get_digital(DIGITAL_B)) {
+            sprocketIndexer.move(Sprocket::VOLTAGE);
+        } else {
+            sprocketIndexer.brake();
+        }
     }
 }

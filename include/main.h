@@ -42,6 +42,7 @@
 //#include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
 #include "EZ-Template/api.hpp"
+#include <string>
 
 // More includes here...
 #include "autons.hpp"
@@ -80,6 +81,12 @@ void opcontrol(void);
 #ifdef __cplusplus
 }
 #endif
+
+// Function declarations for subsystems
+void matchLoader();
+void matchLoader(std::string pos);
+void changeHoodPosition(std::string pos);
+void changeHoodPosition();
 
 #ifdef __cplusplus
 /**
