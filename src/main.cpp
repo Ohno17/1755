@@ -37,9 +37,9 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({ 
-      {"Right Side Red", auton_right},
-      {"Left Side Red", auton_left}, 
-      //{"RED AWP", redAWP},
+      {"LEFT SIDE ANY COLOR", leftSideAuto0},
+      {"RIGHT SIDE ANY COLOR", rightSideAuto0}, 
+      {"RED AWP", redAWP},
       {"PID TEST", testPID},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},

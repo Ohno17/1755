@@ -41,6 +41,37 @@ void Sprocket::move_motors_on_state() {
     }
 }
 
+void Sprocket::move_motors_on_state(OutputState state, double voltagePercentage) {
+    switch (state) {
+        case OutputState::LOWER:
+            sprocketBottom.move(-voltagePercentage*Sprocket::VOLTAGE);
+            sprocketTop.brake();
+            sprocketIndexer.move(-voltagePercentage*Sprocket::VOLTAGE);
+            break;
+        case OutputState::MIDDLE:
+            sprocketBottom.move(voltagePercentage*Sprocket::VOLTAGE);
+            sprocketTop.move(-voltagePercentage*Sprocket::VOLTAGE);
+            sprocketIndexer.move(-voltagePercentage*Sprocket::VOLTAGE);
+            break;
+        case OutputState::HIGHER:
+            sprocketBottom.move(voltagePercentage*Sprocket::VOLTAGE);
+            sprocketTop.move(voltagePercentage*Sprocket::VOLTAGE);
+            sprocketIndexer.move(-voltagePercentage*Sprocket::VOLTAGE);
+            break;
+        case OutputState::NONE:
+        default:
+            sprocketBottom.brake();
+            sprocketTop.brake();
+            sprocketIndexer.brake();
+            break;
+    }
+}
+
+void Sprocket::set_state_and_move(OutputState state, double voltagePercentage) {
+    this->state = state;
+    move_motors_on_state(state, voltagePercentage);
+}
+
 void Sprocket::runIntake(bool isRunning){
     if(isRunning){
         sprocketIndexer.brake();

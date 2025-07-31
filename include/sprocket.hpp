@@ -19,6 +19,8 @@ class Sprocket {
         void move_motors_on_state();
         void opcontrol();
         void runIntake(bool isRunning);
+        void move_motors_on_state(OutputState state, double voltagePercentage);
+        void set_state_and_move(OutputState state, double voltagePercentage);
     private:
         static const int INTAKE_VOLTAGE = 127;
         static const int VOLTAGE = 90;

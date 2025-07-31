@@ -4,6 +4,9 @@ void default_constants();
 void rightSideRed();
 void redAWP();
 void testPID();
+void leftSideAuto0();
+void rightSideAuto0();
+
 void drive_example();
 void turn_example();
 void drive_and_turn();
