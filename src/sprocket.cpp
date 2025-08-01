@@ -72,12 +72,13 @@ void Sprocket::set_state_and_move(OutputState state, double voltagePercentage) {
     move_motors_on_state(state, voltagePercentage);
 }
 
-void Sprocket::runIntake(bool isRunning){
-    if(isRunning){
+void Sprocket::run_intake(bool isRunning) {
+    if (isRunning) {
+        hoodPiston.set(false);
         sprocketIndexer.brake();
         sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
         sprocketTop.move(Sprocket::VOLTAGE);
-    }else{
+    } else {
         sprocketBottom.brake();
         sprocketTop.brake();
     }
@@ -94,9 +95,11 @@ void Sprocket::opcontrol() {
 
     if (master.get_digital(DIGITAL_R2)) {
         // Output
+        hoodPiston.set(true);
         move_motors_on_state();
     } else if (master.get_digital(DIGITAL_R1)) {
         // Intake
+        hoodPiston.set(false);
         sprocketBottom.move(Sprocket::INTAKE_VOLTAGE);
         sprocketTop.move(Sprocket::VOLTAGE);
         sprocketIndexer.brake();

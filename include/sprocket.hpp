@@ -18,7 +18,7 @@ class Sprocket {
 
         void move_motors_on_state();
         void opcontrol();
-        void runIntake(bool isRunning);
+        void run_intake(bool isRunning);
         void move_motors_on_state(OutputState state, double voltagePercentage);
         void set_state_and_move(OutputState state, double voltagePercentage);
     private:

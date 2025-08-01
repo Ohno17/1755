@@ -39,13 +39,13 @@ void testPID(){
 void rightSideRed(){
   sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE);
   pros::delay(5000); // Wait for the piston to move
-  sprockets.runIntake(true);
+  sprockets.run_intake(true);
   pros::delay(1000);
 
-  sprockets.runIntake(false);
+  sprockets.run_intake(false);
   pros::delay(1000);
 
-  sprockets.runIntake(true);
+  sprockets.run_intake(true);
   pros::delay(1000);
 
   // chassis.odom_xyt_set(0_ft, 0_ft, 90_deg); // Set the odom position to 0,0,0
@@ -79,7 +79,7 @@ void rightSideRed(){
 
 void redAWP(){
   chassis.odom_xyt_set(0_ft, 0_ft, 0_deg); // Set the odom position to 0,0,0
-  sprockets.runIntake(true);
+  sprockets.run_intake(true);
   chassis.pid_turn_set(-10_deg, TURN_SPEED/2);
   chassis.pid_wait();
   chassis.pid_drive_set(31_in, DRIVE_SPEED*0.7, true);
@@ -88,7 +88,7 @@ void redAWP(){
   // chassis.pid_wait();
   chassis.pid_turn_set(47_deg, TURN_SPEED/2);
   chassis.pid_wait();
-  sprockets.runIntake(false);
+  sprockets.run_intake(false);
   chassis.pid_drive_set(11_in, DRIVE_SPEED*0.7, true);
   chassis.pid_wait();
   sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 100.0);
@@ -99,7 +99,7 @@ void redAWP(){
   chassis.pid_wait();
   chassis.pid_turn_set(92_deg, TURN_SPEED/2);
   chassis.pid_wait();
-  sprockets.runIntake(true);
+  sprockets.run_intake(true);
   chassis.pid_drive_set(45_in, DRIVE_SPEED*0.7, true);
   chassis.pid_wait_quick();
   chassis.pid_drive_set(6_in, DRIVE_SPEED*0.4, true);
@@ -122,7 +122,7 @@ void leftSideAuto0(){
   chassis.pid_wait();
   //put down the match loader piston
   matchLoaderPiston.set(true);
-  sprockets.runIntake(true);
+  sprockets.run_intake(true);
   chassis.pid_drive_set(6_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait();
   for (int i = 0; i < 2; i++) {
@@ -139,22 +139,26 @@ void leftSideAuto0(){
   chassis.pid_turn_set(0_deg, TURN_SPEED*0.9);
   chassis.pid_wait();
   //drive forward to score
+  matchLoaderPiston.set(false);
   chassis.pid_drive_set(22_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait_until(10_in);
   // SWITCH HOOD HERE
+  hoodPiston.set(true);
   sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
   pros::delay(4000);
 
+  hoodPiston.set(false);
   chassis.pid_drive_set(-12_in, DRIVE_SPEED*0.9, true);
   chassis.pid_wait();
   chassis.pid_turn_set(47_deg, TURN_SPEED*0.8);
   chassis.pid_wait();
-  sprockets.runIntake(true);
+  sprockets.run_intake(true);
   chassis.pid_drive_set(21_in, DRIVE_SPEED*0.9, true);
   chassis.pid_wait_quick_chain();
   chassis.pid_drive_set(27_in, DRIVE_SPEED*0.7, true);
   chassis.pid_wait();
-  sprockets.runIntake(false);
+  sprockets.run_intake(false);
+  hoodPiston.set(true);
   sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 0.8);
   chassis.pid_drive_set(-1.5_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait();
@@ -165,36 +169,34 @@ void leftSideAuto0(){
 
 void rightSideAuto0(){
   chassis.odom_xyt_set(0_ft, 0_ft, 90_deg); // Set the odom position to 0,0,0
-  chassis.pid_drive_set(32_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_drive_set(30_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait();
   chassis.pid_turn_set(180_deg, TURN_SPEED*0.8);
   chassis.pid_wait();
   //put down the match loader piston
   matchLoaderPiston.set(true);
-  sprockets.runIntake(true);
-  chassis.pid_drive_set(6_in, DRIVE_SPEED*0.8, true);
-  chassis.pid_wait();
-  for (int i = 0; i < 2; i++) {
-    //pros::delay(100); // actually prob not needed --> THIS NEED TO BE CHANGED SO THAT WE ONLY TAKE 3 BALLS. EXACT TIME WILL NEED TO BE TESTED AFTER PNEUMATICS ARE WIRED 
-    chassis.pid_drive_set(-1.5_in, DRIVE_SPEED, true);
-    chassis.pid_wait();
-    chassis.pid_drive_set(1.5_in, DRIVE_SPEED, true);
-    chassis.pid_wait();
-  }
+  pros::delay(200);
+  sprockets.run_intake(true);
+
+  // intake matchload
+  chassis.pid_drive_set(10_in, DRIVE_SPEED*0.8, true);
+  pros::delay(950); // TIME SPENT AT THINGY
 
   chassis.pid_drive_set(-4_in, DRIVE_SPEED*0.9, true);
   chassis.pid_wait_quick();
+
   //turn around  
   chassis.pid_turn_set(2_deg, TURN_SPEED*0.9);
   chassis.pid_wait();
+
   //drive forward to score
-  chassis.pid_drive_set(22_in, DRIVE_SPEED*0.8, true);
-  chassis.pid_wait_until(19_in);
-  // SWITCH HOOD HERE
+  hoodPiston.set(true);
+  matchLoaderPiston.set(false);
+  chassis.pid_drive_set(17.25_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait_until(16_in);
+
   sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
   pros::delay(4000);
-
-
 }
 
 #pragma region Template Included
