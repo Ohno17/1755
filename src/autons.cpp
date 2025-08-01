@@ -1,5 +1,5 @@
 #include "main.h"
-// commit test
+
 // These are out of 127
 const int DRIVE_SPEED = 127;
 const int TURN_SPEED = 100;
@@ -31,6 +31,172 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
 
+void testPID(){
+  chassis.pid_drive_set(48_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+}
+
+void rightSideRed(){
+  sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE);
+  pros::delay(5000); // Wait for the piston to move
+  sprockets.runIntake(true);
+  pros::delay(1000);
+
+  sprockets.runIntake(false);
+  pros::delay(1000);
+
+  sprockets.runIntake(true);
+  pros::delay(1000);
+
+  // chassis.odom_xyt_set(0_ft, 0_ft, 90_deg); // Set the odom position to 0,0,0
+  // chassis.pid_drive_set(36_in, DRIVE_SPEED*0.8, true);
+  // chassis.pid_wait();
+  // chassis.pid_turn_set(180_deg, TURN_SPEED/2);
+  // chassis.pid_wait();
+  // //put down the match loader piston
+  // matchLoader("down");
+  // chassis.pid_drive_set(24_in, DRIVE_SPEED*0.8, true);
+  // chassis.pid_wait();
+  // //put up the match loader piston
+  // matchLoader("up");
+  // pros::delay(500);
+  // matchLoader("down");
+  // sprockets.set_state_and_move(Sprocket::OutputState::LOWER); // Move the lower output
+  // pros::delay(5000);
+  // sprockets.set_state_and_move(Sprocket::OutputState::NONE);
+  // chassis.pid_turn_set(2_deg, TURN_SPEED/4);
+  // chassis.pid_wait();
+
+  // chassis.pid_drive_set(46_in, DRIVE_SPEED*0.8, true);
+  // sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
+  
+  // pros::delay(5000);
+
+  //rest of the code
+
+
+}
+
+void redAWP(){
+  chassis.odom_xyt_set(0_ft, 0_ft, 0_deg); // Set the odom position to 0,0,0
+  sprockets.runIntake(true);
+  chassis.pid_turn_set(-10_deg, TURN_SPEED/2);
+  chassis.pid_wait();
+  chassis.pid_drive_set(31_in, DRIVE_SPEED*0.7, true);
+  chassis.pid_wait();
+  // chassis.pid_drive_set(-2_in, DRIVE_SPEED*0.7, true);
+  // chassis.pid_wait();
+  chassis.pid_turn_set(47_deg, TURN_SPEED/2);
+  chassis.pid_wait();
+  sprockets.runIntake(false);
+  chassis.pid_drive_set(11_in, DRIVE_SPEED*0.7, true);
+  chassis.pid_wait();
+  sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 100.0);
+  pros::delay(1000); // Wait to score balls
+  sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 50.0);
+  pros::delay(2000); // Wait to score balls
+  chassis.pid_drive_set(-10_in, DRIVE_SPEED*0.5, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(92_deg, TURN_SPEED/2);
+  chassis.pid_wait();
+  sprockets.runIntake(true);
+  chassis.pid_drive_set(45_in, DRIVE_SPEED*0.7, true);
+  chassis.pid_wait_quick();
+  chassis.pid_drive_set(6_in, DRIVE_SPEED*0.4, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-46_deg, TURN_SPEED/2);
+  chassis.pid_wait();
+  chassis.pid_drive_set(7_in, DRIVE_SPEED*0.7, true);
+  chassis.pid_wait();
+  sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 50.0);
+  pros::delay(2000); // Wait to score balls
+  chassis.pid_turn_set(158_deg, TURN_SPEED/2);
+  chassis.pid_wait();
+}
+
+void leftSideAuto0(){
+  chassis.odom_xyt_set(0_ft, 0_ft, -90_deg); // Set the odom position to 0,0,0
+  chassis.pid_drive_set(32_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-180_deg, TURN_SPEED*0.8);
+  chassis.pid_wait();
+  //put down the match loader piston
+  matchLoaderPiston.set(true);
+  sprockets.runIntake(true);
+  chassis.pid_drive_set(6_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait();
+  for (int i = 0; i < 2; i++) {
+    //pros::delay(100); // actually prob not needed --> THIS NEED TO BE CHANGED SO THAT WE ONLY TAKE 3 BALLS. EXACT TIME WILL NEED TO BE TESTED AFTER PNEUMATICS ARE WIRED 
+    chassis.pid_drive_set(-1.5_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+    chassis.pid_drive_set(1.5_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+  }
+
+  chassis.pid_drive_set(-4_in, DRIVE_SPEED*0.9, true);
+  chassis.pid_wait_quick();
+  //turn around  
+  chassis.pid_turn_set(0_deg, TURN_SPEED*0.9);
+  chassis.pid_wait();
+  //drive forward to score
+  chassis.pid_drive_set(22_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait_until(10_in);
+  // SWITCH HOOD HERE
+  sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
+  pros::delay(4000);
+
+  chassis.pid_drive_set(-12_in, DRIVE_SPEED*0.9, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(47_deg, TURN_SPEED*0.8);
+  chassis.pid_wait();
+  sprockets.runIntake(true);
+  chassis.pid_drive_set(21_in, DRIVE_SPEED*0.9, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(27_in, DRIVE_SPEED*0.7, true);
+  chassis.pid_wait();
+  sprockets.runIntake(false);
+  sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 0.8);
+  chassis.pid_drive_set(-1.5_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait();
+  pros::delay(5000); // Wait to score balls
+  sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 0.5);
+
+}
+
+void rightSideAuto0(){
+  chassis.odom_xyt_set(0_ft, 0_ft, 90_deg); // Set the odom position to 0,0,0
+  chassis.pid_drive_set(32_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(180_deg, TURN_SPEED*0.8);
+  chassis.pid_wait();
+  //put down the match loader piston
+  matchLoaderPiston.set(true);
+  sprockets.runIntake(true);
+  chassis.pid_drive_set(6_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait();
+  for (int i = 0; i < 2; i++) {
+    //pros::delay(100); // actually prob not needed --> THIS NEED TO BE CHANGED SO THAT WE ONLY TAKE 3 BALLS. EXACT TIME WILL NEED TO BE TESTED AFTER PNEUMATICS ARE WIRED 
+    chassis.pid_drive_set(-1.5_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+    chassis.pid_drive_set(1.5_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+  }
+
+  chassis.pid_drive_set(-4_in, DRIVE_SPEED*0.9, true);
+  chassis.pid_wait_quick();
+  //turn around  
+  chassis.pid_turn_set(2_deg, TURN_SPEED*0.9);
+  chassis.pid_wait();
+  //drive forward to score
+  chassis.pid_drive_set(22_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait_until(19_in);
+  // SWITCH HOOD HERE
+  sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
+  pros::delay(4000);
+
+
+}
+
 #pragma region Template Included
 
 ///
@@ -52,189 +218,6 @@ void drive_example() {
   chassis.pid_wait();
 }
 
-
-  void testPID(){
-    chassis.pid_drive_set(48_in, DRIVE_SPEED, true);
-    chassis.pid_wait();
-  }
-
-  void rightSideRed(){
-    sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE);
-    pros::delay(5000); // Wait for the piston to move
-    sprockets.runIntake(true);
-    pros::delay(1000);
-
-    sprockets.runIntake(false);
-    pros::delay(1000);
-
-    sprockets.runIntake(true);
-    pros::delay(1000);
-
-    // chassis.odom_xyt_set(0_ft, 0_ft, 90_deg); // Set the odom position to 0,0,0
-    // chassis.pid_drive_set(36_in, DRIVE_SPEED*0.8, true);
-    // chassis.pid_wait();
-    // chassis.pid_turn_set(180_deg, TURN_SPEED/2);
-    // chassis.pid_wait();
-    // //put down the match loader piston
-    // matchLoader("down");
-    // chassis.pid_drive_set(24_in, DRIVE_SPEED*0.8, true);
-    // chassis.pid_wait();
-    // //put up the match loader piston
-    // matchLoader("up");
-    // pros::delay(500);
-    // matchLoader("down");
-    // sprockets.set_state_and_move(Sprocket::OutputState::LOWER); // Move the lower output
-    // pros::delay(5000);
-    // sprockets.set_state_and_move(Sprocket::OutputState::NONE);
-    // chassis.pid_turn_set(2_deg, TURN_SPEED/4);
-    // chassis.pid_wait();
-
-    // chassis.pid_drive_set(46_in, DRIVE_SPEED*0.8, true);
-    // sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
-    
-    // pros::delay(5000);
-
-    //rest of the code
-
-
-  }
-
-  void redAWP(){
-    chassis.odom_xyt_set(0_ft, 0_ft, 0_deg); // Set the odom position to 0,0,0
-    sprockets.runIntake(true);
-    chassis.pid_turn_set(-10_deg, TURN_SPEED/2);
-    chassis.pid_wait();
-    chassis.pid_drive_set(31_in, DRIVE_SPEED*0.7, true);
-    chassis.pid_wait();
-    // chassis.pid_drive_set(-2_in, DRIVE_SPEED*0.7, true);
-    // chassis.pid_wait();
-    chassis.pid_turn_set(47_deg, TURN_SPEED/2);
-    chassis.pid_wait();
-    sprockets.runIntake(false);
-    chassis.pid_drive_set(11_in, DRIVE_SPEED*0.7, true);
-    chassis.pid_wait();
-    sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 100.0);
-    pros::delay(1000); // Wait to score balls
-    sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 50.0);
-    pros::delay(2000); // Wait to score balls
-    chassis.pid_drive_set(-10_in, DRIVE_SPEED*0.5, true);
-    chassis.pid_wait();
-    chassis.pid_turn_set(92_deg, TURN_SPEED/2);
-    chassis.pid_wait();
-    sprockets.runIntake(true);
-    chassis.pid_drive_set(45_in, DRIVE_SPEED*0.7, true);
-    chassis.pid_wait_quick();
-    chassis.pid_drive_set(6_in, DRIVE_SPEED*0.4, true);
-    chassis.pid_wait();
-    chassis.pid_turn_set(-46_deg, TURN_SPEED/2);
-    chassis.pid_wait();
-    chassis.pid_drive_set(7_in, DRIVE_SPEED*0.7, true);
-    chassis.pid_wait();
-    sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 50.0);
-    pros::delay(2000); // Wait to score balls
-    chassis.pid_turn_set(158_deg, TURN_SPEED/2);
-    chassis.pid_wait();
-
-
-
-
-
-
-
-
-
-
-
-  }
-
-  // put in pre auton
-  //matchLoader("up");
-  //hood up
-  //
-  //
-
-  void leftSideAuto0(){
-    chassis.odom_xyt_set(0_ft, 0_ft, -90_deg); // Set the odom position to 0,0,0
-    chassis.pid_drive_set(32_in, DRIVE_SPEED*0.8, true);
-    chassis.pid_wait();
-    chassis.pid_turn_set(-180_deg, TURN_SPEED*0.8);
-    chassis.pid_wait();
-    //put down the match loader piston
-    matchLoader("down");
-    sprockets.runIntake(true);
-    chassis.pid_drive_set(6_in, DRIVE_SPEED*0.8, true);
-    chassis.pid_wait();
-    for (int i = 0; i < 2; i++) {
-      //pros::delay(100); // actually prob not needed --> THIS NEED TO BE CHANGED SO THAT WE ONLY TAKE 3 BALLS. EXACT TIME WILL NEED TO BE TESTED AFTER PNEUMATICS ARE WIRED 
-      chassis.pid_drive_set(-1.5_in, DRIVE_SPEED, true);
-      chassis.pid_wait();
-      chassis.pid_drive_set(1.5_in, DRIVE_SPEED, true);
-      chassis.pid_wait();
-    }
-
-    chassis.pid_drive_set(-4_in, DRIVE_SPEED*0.9, true);
-    chassis.pid_wait_quick();
-    //turn around  
-    chassis.pid_turn_set(0_deg, TURN_SPEED*0.9);
-    chassis.pid_wait();
-    //drive forward to score
-    chassis.pid_drive_set(22_in, DRIVE_SPEED*0.8, true);
-    chassis.pid_wait_until(10_in);
-    // SWITCH HOOD HERE
-    sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
-    pros::delay(4000);
-
-    chassis.pid_drive_set(-12_in, DRIVE_SPEED*0.9, true);
-    chassis.pid_wait();
-    chassis.pid_turn_set(47_deg, TURN_SPEED*0.8);
-    chassis.pid_wait();
-    sprockets.runIntake(true);
-    chassis.pid_drive_set(21_in, DRIVE_SPEED*0.9, true);
-    chassis.pid_wait_quick_chain();
-    chassis.pid_drive_set(27_in, DRIVE_SPEED*0.7, true);
-    chassis.pid_wait();
-    sprockets.runIntake(false);
-    sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 0.8);
-    chassis.pid_drive_set(-1.5_in, DRIVE_SPEED*0.8, true);
-    chassis.pid_wait();
-    pros::delay(5000); // Wait to score balls
-    sprockets.set_state_and_move(Sprocket::OutputState::MIDDLE, 0.5);
-
-  }
-
-  void rightSideAuto0(){
-    chassis.odom_xyt_set(0_ft, 0_ft, 90_deg); // Set the odom position to 0,0,0
-    chassis.pid_drive_set(32_in, DRIVE_SPEED*0.8, true);
-    chassis.pid_wait();
-    chassis.pid_turn_set(180_deg, TURN_SPEED*0.8);
-    chassis.pid_wait();
-    //put down the match loader piston
-    matchLoader("down");
-    sprockets.runIntake(true);
-    chassis.pid_drive_set(6_in, DRIVE_SPEED*0.8, true);
-    chassis.pid_wait();
-    for (int i = 0; i < 2; i++) {
-      //pros::delay(100); // actually prob not needed --> THIS NEED TO BE CHANGED SO THAT WE ONLY TAKE 3 BALLS. EXACT TIME WILL NEED TO BE TESTED AFTER PNEUMATICS ARE WIRED 
-      chassis.pid_drive_set(-1.5_in, DRIVE_SPEED, true);
-      chassis.pid_wait();
-      chassis.pid_drive_set(1.5_in, DRIVE_SPEED, true);
-      chassis.pid_wait();
-    }
-
-    chassis.pid_drive_set(-4_in, DRIVE_SPEED*0.9, true);
-    chassis.pid_wait_quick();
-    //turn around  
-    chassis.pid_turn_set(2_deg, TURN_SPEED*0.9);
-    chassis.pid_wait();
-    //drive forward to score
-    chassis.pid_drive_set(22_in, DRIVE_SPEED*0.8, true);
-    chassis.pid_wait_until(19_in);
-    // SWITCH HOOD HERE
-    sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
-    pros::delay(4000);
-
-
-  }
 ///
 // Turn Example
 ///
@@ -542,7 +525,3 @@ void measure_offsets() {
 }
 
 #pragma endregion Template Included
-
-// . . .
-// Make your own autonomous functions here
-// . . .

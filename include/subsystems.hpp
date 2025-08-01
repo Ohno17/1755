@@ -7,8 +7,8 @@ extern Drive chassis;
 extern Sprocket sprockets;
 
 inline pros::Optical opticalSensor(1);
-inline ez::Piston matchLoaderPiston('A');
-inline ez::Piston hoodPiston('B');
+inline ez::Piston matchLoaderPiston('H');
+inline ez::Piston hoodPiston('G');
 
 inline pros::Motor sprocketBottom(19);
 inline pros::Motor sprocketTop(18);

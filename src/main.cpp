@@ -1,5 +1,4 @@
 #include "main.h"
-#include "autons.hpp"
 
 ez::Drive chassis(
     {14, -15, -16},    // Left Chassis Ports (negative port will reverse it!)
@@ -217,49 +216,6 @@ void checkColorSort(string color){
     }
 }
 
-
-bool isMatchLoaderDown = false;
-void matchLoader(){
-  if (isMatchLoaderDown) {
-    matchLoaderPiston.set(false);
-    isMatchLoaderDown = false;
-  } else {
-    matchLoaderPiston.set(true);
-    isMatchLoaderDown = true;
-  }
-  pros::delay(1000); // Wait for the piston to move
-}
-
-void matchLoader(string pos){
-  if(pos == "down") {
-    matchLoaderPiston.set(true);
-  } else {
-    matchLoaderPiston.set(false);
-  }
-}
-
-void changeHoodPosition(string pos) {
-  if (pos == "up") {
-    hoodPiston.set(true);
-  } else if (pos == "down") {
-    hoodPiston.set(false);
-  }
-}
-
-bool isHoodUp = false;
-void changeHoodPosition(){
-  if (isHoodUp) {
-    changeHoodPosition("down");
-    isHoodUp = false;
-  } else {
-    changeHoodPosition("up");
-    isHoodUp = true;
-  }
-  pros::delay(1000); // Wait for the hood to move
-}
-
-
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -286,14 +242,8 @@ void opcontrol() {
     chassis.opcontrol_arcade_standard(ez::SPLIT);
     sprockets.opcontrol();
 
-    //matchloader code, will be moved to a separate file later
-    if (master.get_digital_new_press(DIGITAL_B)) {
-      matchLoader();
-    }
-    //Hood code, will be moved to a separate file later
-    if (master.get_digital_new_press(DIGITAL_L1)) {
-      changeHoodPosition();
-    }
+    hoodPiston.button_toggle(master.get_digital(DIGITAL_L1));
+    matchLoaderPiston.button_toggle(master.get_digital(DIGITAL_L2));
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
