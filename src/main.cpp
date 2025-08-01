@@ -36,8 +36,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({ 
-      {"LEFT SIDE ANY COLOR", leftSideAuto0},
-      {"RIGHT SIDE ANY COLOR", rightSideAuto0},
+      {"LEFT SIDE", left_side_auto},
+      {"RIGHT SIDE", right_side_auto}
   });
 
   // Initialize chassis and auton selector
@@ -84,7 +84,6 @@ void autonomous() {
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
-  //auton_right();
 
   /*
   Odometry and Pure Pursuit are not magic

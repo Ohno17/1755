@@ -23,7 +23,7 @@ class Sprocket {
         void set_state_and_move(OutputState state, double voltagePercentage);
     private:
         static const int INTAKE_VOLTAGE = 127;
-        static const int VOLTAGE = 105;
+        static const int VOLTAGE = 95;
 
         OutputState state = OutputState::NONE;
 };

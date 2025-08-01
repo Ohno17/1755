@@ -2,6 +2,7 @@
 
 // These are out of 127
 const int DRIVE_SPEED = 127;
+
 const int TURN_SPEED = 100;
 const int SWING_SPEED = 110;
 
@@ -31,7 +32,7 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
 
-void leftSideAuto0(){
+void left_side_auto() {
   chassis.odom_xyt_set(0_ft, 0_ft, -90_deg); // Set the odom position to 0,0,0
   chassis.pid_drive_set(31_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait();
@@ -81,9 +82,9 @@ void leftSideAuto0(){
   pros::delay(4000);
 }
 
-void rightSideAuto0(){
+void right_side_auto() {
   chassis.odom_xyt_set(0_ft, 0_ft, 90_deg); // Set the odom position to 0,0,0
-  chassis.pid_drive_set(30_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_drive_set(31_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait();
   chassis.pid_turn_set(180_deg, TURN_SPEED*0.8);
   chassis.pid_wait();
@@ -93,10 +94,10 @@ void rightSideAuto0(){
   sprockets.run_intake(true);
 
   // intake matchload
-  chassis.pid_drive_set(10_in, DRIVE_SPEED*0.8, true);
-  pros::delay(950); // TIME SPENT AT THINGY
+  chassis.pid_drive_set(11_in, DRIVE_SPEED*0.85, true);
+  pros::delay(1000); // TIME SPENT AT THINGY
 
-  chassis.pid_drive_set(-4_in, DRIVE_SPEED*0.9, true);
+  chassis.pid_drive_set(-10_in, DRIVE_SPEED*0.9, true);
   chassis.pid_wait_quick();
 
   //turn around  
@@ -106,9 +107,27 @@ void rightSideAuto0(){
   //drive forward to score
   hoodPiston.set(true);
   matchLoaderPiston.set(false);
-  chassis.pid_drive_set(17.25_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_drive_set(15.6_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait_until(16_in);
 
   sprockets.set_state_and_move(Sprocket::OutputState::HIGHER);
-  pros::delay(4000);
+  pros::delay(3000);
+  sprockets.set_state_and_move(Sprocket::OutputState::NONE);
+
+  // diag0-_)SI()(I)ASIIASFI)AI)(FS(A))
+
+  hoodPiston.set(false);
+  chassis.pid_drive_set(-12_in, DRIVE_SPEED*0.9, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-45_deg, TURN_SPEED*0.7);
+  sprockets.run_intake(true);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(20_in, DRIVE_SPEED*0.9, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(27_in, DRIVE_SPEED*0.8, true);
+  chassis.pid_wait();
+  pros::delay(1000);
+  sprockets.run_intake(false);
+  hoodPiston.set(true);
 }
