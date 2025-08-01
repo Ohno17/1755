@@ -77,7 +77,7 @@ void Sprocket::run_intake(bool isRunning) {
         hoodPiston.set(false);
         sprocketIndexer.brake();
         sprocketBottom.move(Sprocket::VOLTAGE);
-        sprocketTop.move(Sprocket::VOLTAGE);
+        sprocketTop.move(Sprocket::VOLTAGE - 30);
     } else {
         sprocketBottom.brake();
         sprocketTop.brake();
@@ -101,7 +101,7 @@ void Sprocket::opcontrol() {
         // Intake
         hoodPiston.set(false);
         sprocketBottom.move(Sprocket::VOLTAGE);
-        sprocketTop.move(Sprocket::VOLTAGE);
+        sprocketTop.move(Sprocket::VOLTAGE - 30);
         sprocketIndexer.brake();
     } else {
         sprocketBottom.brake();

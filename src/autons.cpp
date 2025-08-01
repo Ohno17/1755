@@ -120,14 +120,14 @@ void right_side_auto() {
   chassis.pid_drive_set(-12_in, DRIVE_SPEED*0.9, true);
   chassis.pid_wait();
   chassis.pid_turn_set(-45_deg, TURN_SPEED*0.7);
-  sprockets.run_intake(true);
+  sprockets.set_state_and_move(Sprocket::OutputState::LOWER, 1);
   chassis.pid_wait();
 
   chassis.pid_drive_set(20_in, DRIVE_SPEED*0.9, true);
   chassis.pid_wait_quick_chain();
   chassis.pid_drive_set(27_in, DRIVE_SPEED*0.8, true);
   chassis.pid_wait();
-  pros::delay(1000);
-  sprockets.run_intake(false);
-  hoodPiston.set(true);
+
+  pros::delay(4000);
+  sprockets.set_state_and_move(Sprocket::OutputState::NONE);
 }
